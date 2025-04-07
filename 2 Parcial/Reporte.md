@@ -4,6 +4,10 @@
 
 El objetivo de este reporte es presentar los resultados de las pruebas de rendimiento realizadas sobre el sistema de WordPress, utilizando herramientas de prueba de carga como **Siege** y **Apache Benchmark (AB)**. Las pruebas fueron realizadas en un entorno con múltiples nodos de base de datos y balanceo de carga mediante **HAProxy**.
 
+## Diagrama de arquitectura 
+![Diagrama](https://github.com/OrbelinJimnez/Computo-de-alto-desempe-o/blob/main/2%20Parcial/Capturas/file_0000000079d051f69ae9b1c7682aadca_conversation_id%3D67ef354a-ae34-8002-890b-1f11672714b7%26message_id%3D5e5d09cb-78c4-43c3-9e27-8867067886d7%20(1).PNG).
+
+
 ### Pruebas
 ![Pruebas](https://github.com/OrbelinJimnez/Computo-de-alto-desempe-o/blob/main/2%20Parcial/Capturas/Screenshot%20at%202025-04-03%2019-29-27.png).
 ![Pruebas](https://github.com/OrbelinJimnez/Computo-de-alto-desempe-o/blob/main/2%20Parcial/Capturas/Screenshot%20at%202025-04-03%2023-07-22.png ).
