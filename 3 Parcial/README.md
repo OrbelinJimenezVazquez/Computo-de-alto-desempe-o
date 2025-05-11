@@ -5,10 +5,33 @@
 
 El objetivo de este reporte es presentar los resultados de las pruebas de rendimiento realizadas sobre el sistema de WordPress, utilizando herramientas de prueba de carga como **Siege** y **Apache Benchmark (AB)**. Las pruebas fueron realizadas en un entorno con múltiples nodos de base de datos y balanceo de carga mediante **HAProxy**.
 
-## Diagrama de arquitectura
+## Arquitectura del Sistema
 
-![Diagrama](https://github.com/OrbelinJimnez/Computo-de-alto-desempe-o/blob/main/2%20Parcial/Capturas/file_0000000079d051f69ae9b1c7682aadca_conversation_id%3D67ef354a-ae34-8002-890b-1f11672714b7%26message_id%3D5e5d09cb-78c4-43c3-9e27-8867067886d7%20(1).PNG)
+El sistema está diseñado con un enfoque de **alta disponibilidad y escalabilidad horizontal**, distribuido en 10 contenedores Docker interconectados mediante una red `bridge` personalizada (`galera`). Esta arquitectura simula un entorno de producción con redundancia tanto en la capa de base de datos como en la capa web. A continuación, se describen los componentes:
 
+### Componentes
+
+- **3 Nodos de Base de Datos MariaDB (Galera Cluster):**
+  - `dbnode1`, `dbnode2`, `dbnode3`
+  - Configurados con replicación síncrona Galera para asegurar consistencia entre nodos.
+  - Arranque controlado por scripts y `depends_on` en Docker Compose.
+
+- **3 Servidores Web (WordPress):**
+  - `webnode1`, `webnode2`, `webnode3`
+  - Cada contenedor contiene una instalación de WordPress conectada al clúster Galera a través del balanceador `haproxy_db_master`.
+
+- **2 Balanceadores de Base de Datos (HAProxy):**
+  - `haproxy_db_master` y `haproxy_db_slave` (puertos 3307 y 3308)
+  - Distribuyen las conexiones a los nodos de base de datos mediante round-robin y revisiones de estado (health checks).
+
+- **2 Balanceadores de Aplicación Web (HAProxy):**
+  - `haproxy_web` en puerto 80 (predeterminado)
+  - `haproxy_web_slave` en puerto 8081 (uso alternativo)
+  - Balancean las peticiones entrantes hacia los contenedores `webnode*`.
+
+### Diagrama de Arquitectura
+
+![Diagrama](./A_diagram_illustrates_a_high-level_web_application.png)
 ## Herramientas Utilizadas
 
 - **Siege**: Herramienta para realizar pruebas de carga y medir la eficiencia de las aplicaciones web.
