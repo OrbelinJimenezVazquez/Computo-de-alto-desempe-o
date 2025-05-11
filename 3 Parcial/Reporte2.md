@@ -31,7 +31,7 @@ El sistema está diseñado con un enfoque de **alta disponibilidad y escalabilid
 
 ### Diagrama de Arquitectura
 
-![Diagrama](./A_diagram_illustrates_a_high-level_web_application.png)
+![Diagrama]([./A_diagram_illustrates_a_high-level_web_application.](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/LoadBalancers.png))
 ## Herramientas Utilizadas
 
 - **Siege**: Herramienta para realizar pruebas de carga y medir la eficiencia de las aplicaciones web.
