@@ -31,13 +31,14 @@ El sistema está diseñado con un enfoque de **alta disponibilidad y escalabilid
 
 ### Diagrama de Arquitectura
 
-![Diagrama]([./A_diagram_illustrates_a_high-level_web_application.](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/LoadBalancers.png))
+![Diagrama](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/LoadBalancers.png)
 ## Herramientas Utilizadas
 
 - **Siege**: Herramienta para realizar pruebas de carga y medir la eficiencia de las aplicaciones web.
 - **Apache Benchmark (AB)**: Herramienta para evaluar el rendimiento de servidores web.
 
 ## Pruebas Realizadas
+
 
 ### Siege
 
@@ -56,6 +57,9 @@ siege -c 50 -t 1m http://localhost/
 - Concurrency: 49.72  
 - Failed transactions: 0  
 
+![Prueba con 50 usuarios durante 1 minuto:](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/siege%20-c%2050%20-t%201m.png).
+
+
 #### Prueba con 100 usuarios durante 5 minutos:
 ```bash
 siege -c 100 -t 5m http://localhost/
@@ -70,6 +74,8 @@ siege -c 100 -t 5m http://localhost/
 - Throughput: 0.53 MB/s  
 - Concurrency: 99.41  
 - Failed transactions: 0  
+
+![ Prueba con 100 usuarios durante 5 minutos](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/siege%20-c%20100%20-t%205m.png).
 
 #### Prueba con 500 usuarios durante 10 minutos:
 ```bash
@@ -86,6 +92,8 @@ siege -c 500 -t 10m http://localhost/
 - Concurrency: 230.67  
 - Failed transactions: 1,562  
 
+![Prueba con 500 usuarios durante 10 minutos](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/siege%20-c%20500%20-t%2010m.png).
+
 ### Apache Benchmark (AB)
 
 #### Prueba con 100 peticiones y 10 concurrencias:
@@ -100,6 +108,9 @@ ab -n 100 -c 10 http://localhost/
 - Tiempo medio por petición: 121.5 ms  
 - Transfer rate: 4056.13 KB/sec  
 
+![Prueba con 100 peticiones y 10 concurrencias](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/ab%20-n%20100%20-c%2010.png).
+
+
 #### Prueba con 1000 peticiones y 50 concurrencias:
 ```bash
 ab -n 1000 -c 50 http://localhost/
@@ -112,6 +123,8 @@ ab -n 1000 -c 50 http://localhost/
 - Tiempo medio por petición: 558.4 ms  
 - Transfer rate: 4412.99 KB/sec  
 
+![Prueba con 1000 peticiones y 50 concurrencias](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/ab%20-n%201000%20-c%2050.png).
+
 #### Prueba con 10,000 peticiones y 500 concurrencias:
 ```bash
 ab -n 10000 -c 500 http://localhost/
@@ -123,6 +136,15 @@ ab -n 10000 -c 500 http://localhost/
 - Requests/sec: 586.39  
 - Tiempo medio por petición: 852.68 ms  
 - Transfer rate: 4080.45 KB/sec  
+
+![Prueba con 10,000 peticiones y 500 concurrencias](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/ab%20-n%2010000%20-c%20500.png).
+
+
+## Graficas comparativas
+
+![Transacciones](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/grafica1.png).
+![Respuesta Promedio](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/grafica2.png).
+![Disponibilidad de prueba](https://github.com/OrbelinJimenezVazquez/Computo-de-alto-desempe-o/blob/main/3%20Parcial/Capturas/grafica3.png).
 
 ## Conclusiones
 
