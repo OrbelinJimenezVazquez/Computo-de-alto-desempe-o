@@ -1,0 +1,40 @@
+name: Plot Google Stock Price
+
+on:
+  push:
+    branches:
+      - main  # o la rama que estés usando
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Python script
+      run: |
+        python plot_google_stock.py
+
+    - name: Commit and push the plot image
+      run: |
+        git config --global user.name 'Your Name'
+        git config --global user.email 'youremail@example.com'
+        git add google_stock_price.png
+        git commit -m 'Add stock price graph'
+        git push
+
