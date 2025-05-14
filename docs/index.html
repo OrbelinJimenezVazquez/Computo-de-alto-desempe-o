@@ -34,20 +34,6 @@
         height: 400px;
       }
 
-      .stats-summary {
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-      }
-
-      h2 {
-        color: #a50044; /* Barça red */
-        border-bottom: 2px solid #f0f0f0;
-        padding-bottom: 0.5rem;
-      }
-
       footer {
         text-align: center;
         padding: 1rem;
@@ -55,153 +41,127 @@
         color: #666;
         font-size: 0.9rem;
       }
-
-      .error-message {
-        background-color: #fee2e2;
-        border: 1px solid #ef4444;
-        color: #b91c1c;
-        padding: 1rem;
-        border-radius: 8px;
-        margin: 1rem 0;
-      }
     </style>
   </head>
   <body>
     <header>
       <h1 class="text-3xl font-bold">Estadísticas de Google</h1>
-      <p class="mt-2">Análisis de datos extraídos desde Google</p>
+      <p class="mt-2">Análisis del precio de acciones de Google</p>
     </header>
 
     <main class="container mx-auto px-4">
       <div class="chart-container">
         <canvas id="chart"></canvas>
       </div>
-
-      <div class="stats-summary">
-        <h2 class="text-xl font-bold mb-4">Resumen de datos</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 class="font-semibold text-blue-800">Datos Generales</h3>
-            <ul class="mt-2 space-y-1">
-              <!-- Resumen general del CSV -->
-            </ul>
-          </div>
-          <div>
-            <h3 class="font-semibold text-red-700">Temporadas Destacadas</h3>
-            <ul class="mt-2 space-y-1">
-              <!-- Datos destacados del CSV -->
-            </ul>
-          </div>
-        </div>
-      </div>
     </main>
 
     <footer>
-      <p>Datos extraídos de Google</p>
+      <p>Datos extraídos de acciones de Google</p>
     </footer>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const chartCtx = document.getElementById("chart").getContext("2d");
 
-        // Función para leer CSV y transformarlo en formato adecuado
-        function parseCSV(csv) {
-          const lines = csv.split("\n");
-          const headers = lines[0].split(",");
-          const data = [];
+        // Datos simulados para la gráfica, debes reemplazarlos con los datos cargados
+        const googleData = {
+          dates: [],
+          openPrices: [],
+          closePrices: [],
+        };
 
-          for (let i = 1; i < lines.length; i++) {
-            const line = lines[i].split(",");
-            const row = {};
-            for (let j = 0; j < headers.length; j++) {
-              row[headers[j]] = line[j];
-            }
-            data.push(row);
-          }
-          return data;
-        }
-
-        // Cargar el archivo CSV y procesarlo
-        fetch("docs/data/google.csv") // Asegúrate de que esta ruta sea correcta
+        fetch("/mnt/data/GOOG.csv")
           .then((response) => response.text())
           .then((csv) => {
-            const data = parseCSV(csv);
+            const lines = csv.split("\n");
+            lines.forEach((line) => {
+              const data = line.split(",");
+              if (data.length === 7) {
+                googleData.dates.push(data[0]);
+                googleData.openPrices.push(parseFloat(data[1]));
+                googleData.closePrices.push(parseFloat(data[4]));
+              }
+            });
 
-            // Extraer los datos para los gráficos
-            const seasons = data.map((row) => row["Temporada"]); // Asumiendo que "Temporada" es el nombre de la columna en el CSV
-            const values = data.map((row) => row["Valor"]); // Y "Valor" es la columna con los datos numéricos
-
-            // Crear gráfico con los datos procesados
-            createChart({ seasons, values }, chartCtx);
+            createChart(googleData, chartCtx);
           })
-          .catch((error) => {
-            console.error("Error al cargar el archivo CSV", error);
-            alert("Hubo un error al cargar los datos.");
+          .catch((error) =>
+            console.error("Error al cargar los datos CSV", error)
+          );
+
+        function createChart(data, ctx) {
+          const openColor = "rgba(0, 77, 152, 0.8)"; // Color azul para el precio de apertura
+          const closeColor = "rgba(165, 0, 68, 0.8)"; // Color rojo para el precio de cierre
+
+          new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: data.dates,
+              datasets: [
+                {
+                  label: "Precio de Apertura",
+                  data: data.openPrices,
+                  backgroundColor: "rgba(0, 77, 152, 0.2)",
+                  borderColor: openColor,
+                  borderWidth: 2,
+                  fill: true,
+                },
+                {
+                  label: "Precio de Cierre",
+                  data: data.closePrices,
+                  backgroundColor: "rgba(165, 0, 68, 0.2)",
+                  borderColor: closeColor,
+                  borderWidth: 2,
+                  fill: true,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                title: {
+                  display: true,
+                  text: "Precio de Acciones de Google",
+                  font: {
+                    size: 18,
+                    weight: "bold",
+                  },
+                  padding: {
+                    top: 10,
+                    bottom: 20,
+                  },
+                },
+                legend: {
+                  position: "top",
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: false,
+                  title: {
+                    display: true,
+                    text: "Precio en USD",
+                  },
+                  grid: {
+                    display: true,
+                    color: "rgba(0, 0, 0, 0.05)",
+                  },
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Fecha",
+                  },
+                  grid: {
+                    display: false,
+                  },
+                },
+              },
+            },
           });
+        }
       });
-
-      function createChart(data, ctx) {
-        const chartColor = "rgba(0, 77, 152, 0.8)"; // Un color genérico para el gráfico
-
-        new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: data.seasons,
-            datasets: [
-              {
-                label: "Valor",
-                data: data.values,
-                backgroundColor: chartColor,
-                borderColor: chartColor.replace("0.8", "1"),
-                borderWidth: 1,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              title: {
-                display: true,
-                text: "Datos de Google por Temporada",
-                font: {
-                  size: 18,
-                  weight: "bold",
-                },
-                padding: {
-                  top: 10,
-                  bottom: 20,
-                },
-              },
-              legend: {
-                position: "top",
-              },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                title: {
-                  display: true,
-                  text: "Valor",
-                },
-                grid: {
-                  display: true,
-                  color: "rgba(0, 0, 0, 0.05)",
-                },
-              },
-              x: {
-                title: {
-                  display: true,
-                  text: "Temporada",
-                },
-                grid: {
-                  display: false,
-                },
-              },
-            },
-          },
-        });
-      }
     </script>
   </body>
 </html>
