@@ -17,7 +17,7 @@ else:
     print(f"El índice '{INDEX_NAME}' no existe, no se necesita eliminar.")
 
 # Cargar el archivo JSON
-with open("docs/data/google.json", "r") as file:
+with open("docs/data/google_clean.json", "r") as file:
     lines = file.readlines()
 
 # Construir los datos para el formato bulk
