@@ -1,15 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
   const chartCtx = document.getElementById("chart").getContext("2d");
 
-  // Cargar datos desde el archivo JSON
-  fetch("data/google.json")
+  // Cargar datos desde el archivo CSV
+  fetch("data/GOOG.csv")
     .then((response) => {
       if (!response.ok) {
         throw new Error(`Error HTTP! Estado: ${response.status}`);
       }
-      return response.json(); // Usar .json() en lugar de .text()
+      return response.text();
     })
-    .then((data) => {
+    .then((text) => {
+      // Convertir el CSV a un arreglo de objetos
+      const data = csvToArray(text);
+
       // Procesar los datos para la visualización
       return processData(data);
     })
@@ -23,16 +26,41 @@ document.addEventListener("DOMContentLoaded", function () {
       ).innerHTML = `<div class="error-message">
           <h3>Error al cargar los datos</h3>
           <p>${error.message}</p>
-          <p>Ruta intentada: data/google.json</p>
+          <p>Ruta intentada: data/GOOG.csv</p>
         </div>`;
     });
 });
 
+function csvToArray(csv) {
+  const lines = csv.trim().split("\n");
+  const headers = lines[0].split(",");
+  return lines.slice(1).map((line) => {
+    const values = line.split(",");
+    let obj = {};
+    headers.forEach((header, i) => {
+      obj[header] = values[i];
+    });
+    return obj;
+  });
+}
+
 function processData(data) {
-  // Extraer las fechas y precios de cierre (Close) y apertura (Open)
-  const dates = data.map((item) => item.date); // Asegúrate de que 'date' esté bien formateado en el JSON
-  const opens = data.map((item) => parseFloat(item.open));
-  const closes = data.map((item) => parseFloat(item.close));
+  // Limpiar y verificar los datos
+  const dates = [];
+  const opens = [];
+  const closes = [];
+
+  data.forEach((item) => {
+    const date = item.Date;
+    const open = parseFloat(item.Open);
+    const close = parseFloat(item.Close);
+
+    if (date && !isNaN(open) && !isNaN(close)) {
+      dates.push(date);
+      opens.push(open);
+      closes.push(close);
+    }
+  });
 
   return {
     dates: dates,
