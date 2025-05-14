@@ -3,7 +3,7 @@ import os
 
 print("Directorio actual:", os.getcwd())
 
-# Leer el archivo CSV
+# Leer el archivo CSV con el delimitador correcto
 df = pd.read_csv(r"C:\Users\orbel_jlkj13s\Documents\Computo-de-alto-desempe-o\docs\data\GOOG.csv", encoding="latin1")
 
 # Imprimir los nombres de las columnas para verificar
@@ -22,7 +22,7 @@ df = df.sort_values(by="date")
 output_dir = "docs/data"
 os.makedirs(output_dir, exist_ok=True)
 
-# Guardar el archivo JSON
-df.to_json(f"{output_dir}/google.json", orient="records", lines=True)
+# Guardar el archivo JSON en el formato adecuado
+df.to_json(f"{output_dir}/google.json", orient="records", lines=False)  # Aquí aseguramos que esté bien formateado.
 
 print("Archivo JSON generado correctamente.")
