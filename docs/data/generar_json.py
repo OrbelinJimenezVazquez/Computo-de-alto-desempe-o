@@ -12,8 +12,10 @@ print("Columnas del DataFrame:", df.columns)
 # Asegurarse de que las columnas tengan el formato correcto (en minúsculas y sin espacios extra)
 df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('+', 'plus').str.replace('/', '_')
 
-# Ordenar por la columna 'date' en lugar de 'season'
-df['date'] = pd.to_datetime(df['date'])  # Asegurarse de que la columna 'date' sea tipo datetime
+# Convertir la columna 'date' de string a datetime
+df['date'] = pd.to_datetime(df['date'], errors='coerce')  # Para fechas ya existentes
+
+# Ordenar por la columna 'date'
 df = df.sort_values(by="date")
 
 # Crear el directorio si no existe
