@@ -70,7 +70,7 @@ function processData(data) {
 }
 
 function createChart(data, ctx) {
-  const openColor = "rgba(165, 0, 68, 0.8)"; // Color para precio de apertura
+  const openColor = "rgba(165, 0, 68, 0.8)"; // Color para precio de aperturas
   const closeColor = "rgba(0, 77, 152, 0.8)"; // Color para precio de cierre
 
   new Chart(ctx, {
